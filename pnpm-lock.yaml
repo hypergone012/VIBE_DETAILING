@@ -20,6 +20,9 @@ importers:
       '@stylexjs/stylex':
         specifier: ^0.19.1
         version: 0.19.1
+      '@supabase/postgrest-js':
+        specifier: 2.117.3
+        version: 2.117.3
       '@supabase/supabase-js':
         specifier: 2.117.3
         version: 2.117.3

@@ -31,7 +31,8 @@ export function contentSecurityPolicy(supabaseUrl: string): string {
     `img-src 'self' data: blob: ${api}`.trim(),
     "font-src 'self' data:",
     `connect-src 'self' ${api} ${ws}`.trim(),
-    "worker-src 'self'",
+    // liquid-gl rasterises the glass snapshot in a blob: worker.
+    "worker-src 'self' blob:",
     "manifest-src 'self'",
     "base-uri 'self'",
     "form-action 'self'",

@@ -82,9 +82,10 @@
     min-height: 100dvh;
   }
 
+  /* No stacking context on #root/.hero: the liquid-gl canvas for the hero button is
+     placed at body level (z 2) between the photo and the hero content (z 3). */
   #root {
     min-height: 100dvh;
-    isolation: isolate;
   }
 
   /* Page column: phones get full width with safe-area gutters, desktop a readable column. */
@@ -115,7 +116,6 @@
     border-end-start-radius: var(--radius-page);
     border-end-end-radius: var(--radius-page);
     background: var(--color-background-surface);
-    contain: paint;
   }
 
   .hero__media {
@@ -142,6 +142,7 @@
 
   .hero__content {
     position: absolute;
+    z-index: 3;
     inset-inline: 0;
     inset-block-end: 0;
     padding: var(--spacing-6) max(var(--spacing-4), var(--app-safe-left)) var(--spacing-6);
@@ -149,6 +150,7 @@
 
   .hero__top {
     position: absolute;
+    z-index: 3;
     inset-inline: 0;
     inset-block-start: 0;
     padding: calc(var(--app-safe-top) + var(--spacing-3)) var(--spacing-4) 0;
@@ -179,11 +181,19 @@
     backdrop-filter: blur(var(--spacing-5)) saturate(160%);
   }
 
-  .glass[data-glass-engine="webgl"],
-  .glass[data-glass-engine="webgpu"] {
+  .glass[data-glass-engine="liquid"] {
     background: transparent;
+    border-color: transparent;
+    box-shadow: none;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+
+  .glass-pane {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
   }
 
   .glass__label {
@@ -217,6 +227,12 @@
 
   .hero-cta__accent {
     color: var(--color-text-accent);
+  }
+
+  .hero-cta__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
   }
 
   /* Bottom navigation: fixed glass bar; pages reserve its height so nothing is hidden. */
@@ -439,7 +455,57 @@
     border: 0;
   }
 
+  .work-tile {
+    display: grid;
+    gap: var(--spacing-1);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: zoom-in;
+    border-radius: var(--radius-container);
+  }
+
+  .work-tile:focus-visible {
+    outline: var(--focus-outline-width) var(--focus-outline-style) var(--focus-outline-color);
+    outline-offset: var(--spacing-0-5);
+  }
+
+  .app-page--chat {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100dvh - var(--app-tabbar-height) - var(--app-safe-bottom));
+  }
+
+  .skip-link:focus {
+    position: fixed;
+    z-index: 60;
+    inset-block-start: var(--spacing-2);
+    inset-inline-start: var(--spacing-2);
+    width: auto;
+    height: auto;
+    clip: auto;
+    padding: var(--spacing-2) var(--spacing-3);
+    background: var(--color-background-popover);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-element);
+  }
+
+  main:focus {
+    outline: none;
+  }
+
   .booking-sheet__body {
-    padding-block-end: calc(var(--app-safe-bottom) + var(--app-keyboard-inset) + var(--spacing-4));
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-block-end: calc(var(--spacing-4) + var(--drawer-keyboard-inset, 0px));
+  }
+
+  [data-slot="drawer-footer"] {
+    padding-block-end: calc(var(--spacing-4) + var(--app-safe-bottom));
   }
 }

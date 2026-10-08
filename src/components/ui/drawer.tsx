@@ -12,9 +12,9 @@
  * resolve to Astryx tokens through the `@theme reference inline` map in app.css.
  *
  * Local changes against upstream:
- * - `keyboardAware` wraps the root in Base UI's documented
- *   `Drawer.VirtualKeyboardProvider`, which keeps focused fields above the software
- *   keyboard and exposes `--drawer-keyboard-inset`;
+ * - `keyboardAware` wraps the portal (inside the root, as the Base UI docs show)
+ *   in `Drawer.VirtualKeyboardProvider`, which keeps focused fields above the
+ *   software keyboard and exposes `--drawer-keyboard-inset`;
  * - overlay `bg-black/60` instead of `/10` (the app is dark-only) and a taller
  *   max height (`100dvh - 3rem`) so the booking steps fit on small phones;
  * - `motion-reduce:duration-0` on the popup for reduced-motion users.
@@ -25,6 +25,7 @@ import { cn } from '@/lib/cn';
 
 type DrawerContextProps = {
   hasSnapPoints: boolean;
+  keyboardAware: boolean;
   modal: DrawerPrimitive.Root.Props['modal'];
   showSwipeHandle: boolean;
   swipeDirection: NonNullable<DrawerPrimitive.Root.Props['swipeDirection']>;
@@ -55,11 +56,11 @@ function Drawer({
 }) {
   const hasSnapPoints = snapPoints != null && snapPoints.length > 0;
   const contextValue = React.useMemo(
-    () => ({ hasSnapPoints, modal, showSwipeHandle, swipeDirection }),
-    [hasSnapPoints, modal, showSwipeHandle, swipeDirection],
+    () => ({ hasSnapPoints, keyboardAware, modal, showSwipeHandle, swipeDirection }),
+    [hasSnapPoints, keyboardAware, modal, showSwipeHandle, swipeDirection],
   );
 
-  const root = (
+  return (
     <DrawerContext.Provider value={contextValue}>
       <DrawerPrimitive.Root
         data-slot="drawer"
@@ -69,12 +70,6 @@ function Drawer({
         {...props}
       />
     </DrawerContext.Provider>
-  );
-
-  return keyboardAware ? (
-    <DrawerPrimitive.VirtualKeyboardProvider>{root}</DrawerPrimitive.VirtualKeyboardProvider>
-  ) : (
-    root
   );
 }
 
@@ -119,10 +114,10 @@ function DrawerSwipeHandle({ className, ...props }: React.ComponentProps<'div'>)
 }
 
 function DrawerContent({ className, children, ...props }: DrawerPrimitive.Popup.Props) {
-  const { hasSnapPoints, modal, showSwipeHandle, swipeDirection } = useDrawer();
+  const { hasSnapPoints, keyboardAware, modal, showSwipeHandle, swipeDirection } = useDrawer();
   const swipeAxis = swipeDirection === 'down' || swipeDirection === 'up' ? 'y' : 'x';
 
-  return (
+  const portal = (
     <DrawerPortal data-slot="drawer-portal">
       {modal === true && <DrawerOverlay data-snap-points={hasSnapPoints ? '' : undefined} />}
       <DrawerPrimitive.Viewport
@@ -176,6 +171,8 @@ function DrawerContent({ className, children, ...props }: DrawerPrimitive.Popup.
       </DrawerPrimitive.Viewport>
     </DrawerPortal>
   );
+
+  return keyboardAware ? <DrawerPrimitive.VirtualKeyboardProvider>{portal}</DrawerPrimitive.VirtualKeyboardProvider> : portal;
 }
 
 function DrawerHeader({ className, ...props }: React.ComponentProps<'div'>) {
