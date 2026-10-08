@@ -1,0 +1,1 @@
+-- Demo seed is generated in stage 3 (pnpm seed:build).
