@@ -1,0 +1,7 @@
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+ignoredBuiltDependencies:
+  - '@astryxdesign/cli'
+  - '@astryxdesign/core'
+  - supabase
