@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && tsx scripts/build/tenant-shells.ts",
     "preview": "vite preview",
     "typecheck": "tsc -b",
     "lint": "oxlint",
@@ -16,7 +16,18 @@
     "db:start": "node scripts/supabase-local.mjs start",
     "db:reset": "node scripts/supabase-local.mjs db reset",
     "db:lint": "supabase db lint --schema public,private --level warning",
-    "verify": "pnpm typecheck && pnpm lint && pnpm test:unit && pnpm test:db"
+    "verify": "pnpm typecheck && pnpm lint && pnpm check:no-business-strings && pnpm test:unit && pnpm test:db",
+    "tenant:new": "tsx scripts/tenant/new.ts",
+    "tenant:validate": "tsx scripts/tenant/validate.ts",
+    "tenant:publish": "tsx scripts/tenant/publish.ts",
+    "tenant:verify": "tsx scripts/tenant/verify.ts",
+    "tenant:schema": "tsx scripts/tenant/json-schema.ts",
+    "seed:build": "tsx scripts/tenant/seed.ts",
+    "demo:media": "tsx scripts/tenant/publish.ts graphite --skip-owner && tsx scripts/tenant/publish.ts severny-boks --skip-owner",
+    "local:bootstrap": "pnpm db:start && pnpm db:reset && pnpm demo:media",
+    "check:no-business-strings": "tsx scripts/check-no-business-strings.ts",
+    "deploy:vercel": "vercel deploy --prebuilt --prod",
+    "deploy:cloudflare": "wrangler pages deploy dist --project-name ${CF_PAGES_PROJECT:-studio-booking}"
   },
   "dependencies": {
     "@astryxdesign/core": "0.6.6",

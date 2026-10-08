@@ -10,6 +10,7 @@ import {
   localStart,
   newPool,
   owner,
+  failure,
   pgError,
   resetRateLimits,
   rows,
@@ -67,13 +68,13 @@ const TABLES = [
 describe('anon has no direct table access', () => {
   for (const table of TABLES) {
     it(`anon cannot select public.${table}`, async () => {
-      const err = await rows(pool, anon(), `select * from public.${table} limit 1`).catch(pgError);
+      const err = await failure(rows(pool, anon(), `select * from public.${table} limit 1`));
       expect(err).toMatchObject({ code: '42501' });
     });
   }
 
   it('anon cannot write bookings or occupancies directly', async () => {
-    const err = await rows(pool, anon(), `delete from public.bookings`).catch(pgError);
+    const err = await failure(rows(pool, anon(), `delete from public.bookings`));
     expect(err).toMatchObject({ code: '42501' });
   });
 
@@ -86,7 +87,7 @@ describe('anon has no direct table access', () => {
       `select public.assistant_begin('x', 'client', '1.1.1.1', 1)`,
       `select public.owner_schedule('${a.slug}', 'today')`,
     ]) {
-      const err = await rows(pool, anon(), sql).catch(pgError);
+      const err = await failure(rows(pool, anon(), sql));
       expect(err.code, sql).toBe('42501');
     }
   });
@@ -103,7 +104,7 @@ describe('owner isolation', () => {
   });
 
   it('owners never read access-token hashes', async () => {
-    const err = await rows(pool, owner(ownerA), 'select * from public.booking_access_tokens').catch(pgError);
+    const err = await failure(rows(pool, owner(ownerA), 'select * from public.booking_access_tokens'));
     expect(err).toMatchObject({ code: '42501' });
   });
 
@@ -137,14 +138,14 @@ describe('owner isolation', () => {
     ]).catch(pgError);
     expect(err).toMatchObject({ code: 'PT422', message: 'service_unavailable' });
     // Composite FK: even a superuser cannot attach A's resource to B's service.
-    const fk = await su(pool, 'insert into public.service_resources (tenant_id, service_id, resource_id) values ($1, $2, $3)', [
+    const fk = await failure(su(pool, 'insert into public.service_resources (tenant_id, service_id, resource_id) values ($1, $2, $3)', [
       b.tenantId,
       b.services.wash,
       a.resources['box-1'],
-    ]).catch(pgError);
+    ]));
     expect(fk.code).toBe('23503');
     // And the service role has no direct table writes at all — only RPCs.
-    const direct = await rows(pool, service, 'delete from public.bookings').catch(pgError);
+    const direct = await failure(rows(pool, service, 'delete from public.bookings'));
     expect(direct.code).toBe('42501');
   });
 

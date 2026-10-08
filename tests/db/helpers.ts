@@ -281,3 +281,13 @@ export function pgError(error: unknown): { code?: string; message?: string; hint
   const e = error as { code?: string; message?: string; hint?: string };
   return { code: e.code, message: e.message, hint: e.hint };
 }
+
+/** Awaits a promise that must reject and returns the Postgres error details. */
+export async function failure(promise: Promise<unknown>): Promise<{ code?: string; message?: string; hint?: string }> {
+  try {
+    await promise;
+  } catch (error) {
+    return pgError(error);
+  }
+  throw new Error('expected the statement to fail');
+}

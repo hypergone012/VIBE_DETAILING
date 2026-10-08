@@ -1,0 +1,42 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "framework": null,
+  "redirects": [
+    { "source": "/s/:slug", "destination": "/s/:slug/", "permanent": false },
+    { "source": "/s/:slug/owner", "destination": "/s/:slug/owner/", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/s/:slug/owner/:path*", "destination": "/s/:slug/owner/index.html" },
+    { "source": "/s/:slug/services", "destination": "/s/:slug/index.html" },
+    { "source": "/s/:slug/services/:path*", "destination": "/s/:slug/index.html" },
+    { "source": "/s/:slug/my", "destination": "/s/:slug/index.html" },
+    { "source": "/s/:slug/my/:path*", "destination": "/s/:slug/index.html" },
+    { "source": "/s/:slug/assistant", "destination": "/s/:slug/index.html" },
+    { "source": "/s/:slug/assistant/:path*", "destination": "/s/:slug/index.html" },
+    { "source": "/s/:slug/privacy", "destination": "/s/:slug/index.html" },
+    { "source": "/s/:slug/privacy/:path*", "destination": "/s/:slug/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
+    },
+    { "source": "/assets/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
+    { "source": "/s/:slug/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+    {
+      "source": "/s/:slug/:file(manifest.webmanifest|manifest-owner.webmanifest)",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json" },
+        { "key": "Cache-Control", "value": "no-cache" }
+      ]
+    }
+  ]
+}

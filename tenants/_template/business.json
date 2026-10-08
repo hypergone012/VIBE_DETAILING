@@ -1,0 +1,54 @@
+{
+  "$schema": "../business.schema.json",
+  "slug": "__SLUG__",
+  "demo": true,
+  "name": "__NAME__",
+  "shortName": "__SHORT__",
+  "tagline": "ЗАПОЛНИТЬ: одна строка о студии",
+  "description": "ЗАПОЛНИТЬ: два-три предложения — что делаете и чем отличаетесь.",
+  "accentColor": "__ACCENT__",
+  "timezone": "__TIMEZONE__",
+  "currency": "RUB",
+  "locale": "ru-RU",
+  "contacts": {
+    "phone": "+7 (900) 000-00-00",
+    "address": "ЗАПОЛНИТЬ: город, улица, дом",
+    "addressNote": "ЗАПОЛНИТЬ: как заехать, где парковка"
+  },
+  "images": {
+    "logo": "images/logo.png",
+    "hero": "images/hero.jpg",
+    "heroAlt": "Автомобиль в боксе студии"
+  },
+  "infoCards": [
+    { "title": "Запись без звонков", "text": "Выберите услугу и время — бокс будет готов к вашему приезду.", "icon": "clock" },
+    { "title": "Гарантия на работу", "text": "ЗАПОЛНИТЬ: условия гарантии студии.", "icon": "shield" },
+    { "title": "Удобное ожидание", "text": "ЗАПОЛНИТЬ: зона ожидания, кофе, Wi‑Fi.", "icon": "coffee" }
+  ],
+  "booking": { "slotStepMinutes": 30, "minLeadMinutes": 120, "horizonDays": 30, "cancelUntilHours": 12 },
+  "resources": [
+    { "key": "box-1", "name": "Бокс 1", "kind": "box" },
+    { "key": "box-2", "name": "Бокс 2", "kind": "box" }
+  ],
+  "services": [
+    { "key": "wash", "name": "Комплексная мойка", "category": "Мойка", "price": 2500, "duration": "1h", "buffer": "15m", "resources": "all" },
+    { "key": "polish", "name": "Полировка кузова", "category": "Кузов", "price": 15000, "priceFrom": true, "duration": "6h", "buffer": "30m", "resources": "all" },
+    { "key": "ceramic", "name": "Керамическое покрытие", "category": "Защита", "price": 30000, "priceFrom": true, "duration": "2d", "buffer": "1h", "resources": "all" }
+  ],
+  "hours": {
+    "mon": "09:00-21:00",
+    "tue": "09:00-21:00",
+    "wed": "09:00-21:00",
+    "thu": "09:00-21:00",
+    "fri": "09:00-21:00",
+    "sat": "10:00-20:00",
+    "sun": "10:00-18:00"
+  },
+  "closedDates": [],
+  "specialHours": [],
+  "works": [
+    { "key": "work-1", "image": "images/works/work-1.jpg", "caption": "ЗАПОЛНИТЬ: подпись к фото" },
+    { "key": "work-2", "image": "images/works/work-2.jpg", "caption": "ЗАПОЛНИТЬ: подпись к фото" },
+    { "key": "work-3", "image": "images/works/work-3.jpg", "caption": "ЗАПОЛНИТЬ: подпись к фото" }
+  ]
+}

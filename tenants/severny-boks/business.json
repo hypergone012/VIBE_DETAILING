@@ -1,0 +1,64 @@
+{
+  "$schema": "../business.schema.json",
+  "slug": "severny-boks",
+  "demo": true,
+  "name": "Автосервис «Северный бокс»",
+  "shortName": "Сев. бокс",
+  "tagline": "ТО, шиномонтаж и ремонт ходовой без очередей",
+  "description": "Три поста с подъёмниками и стенд развала-схождения. Согласуем работы до начала ремонта, показываем снятые детали.",
+  "accentColor": "#FFB020",
+  "timezone": "Asia/Yekaterinburg",
+  "currency": "RUB",
+  "locale": "ru-RU",
+  "contacts": {
+    "phone": "+7 (343) 000-44-55",
+    "phoneDisplay": "+7 343 000-44-55",
+    "address": "Екатеринбург, ул. Монтажников, 4 (демо-адрес)",
+    "addressNote": "Синие ворота с вывеской, заезд с торца здания. Ожидание — в клиентской комнате.",
+    "mapUrl": "https://yandex.ru/maps/?text=%D0%95%D0%BA%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%BD%D0%B1%D1%83%D1%80%D0%B3%2C%20%D0%9C%D0%BE%D0%BD%D1%82%D0%B0%D0%B6%D0%BD%D0%B8%D0%BA%D0%BE%D0%B2%2C%204",
+    "geo": { "lat": 56.8519, "lng": 60.6122 }
+  },
+  "owner": { "email": "owner@severny-boks.example" },
+  "images": {
+    "logo": "images/logo.png",
+    "hero": "images/hero.jpg",
+    "heroAlt": "Автомобиль на двухстоечном подъёмнике под тёплым светом"
+  },
+  "infoCards": [
+    { "title": "Смета до ремонта", "text": "Сначала диагностика и цена, потом работа. Ничего не меняем без согласия.", "icon": "wrench" },
+    { "title": "Гарантия 6 месяцев", "text": "На работы и установленные у нас запчасти. Чек и заказ-наряд — сразу.", "icon": "medal" },
+    { "title": "Обед — по графику", "text": "В будни перерыв с 13:00 до 14:00. Записывайтесь на удобное окно.", "icon": "clock" }
+  ],
+  "booking": { "slotStepMinutes": 15, "minLeadMinutes": 60, "horizonDays": 21, "cancelUntilHours": 3 },
+  "resources": [
+    { "key": "post-1", "name": "Пост 1", "kind": "lift" },
+    { "key": "post-2", "name": "Пост 2", "kind": "lift" },
+    { "key": "align", "name": "Стенд сход-развала", "kind": "bay" }
+  ],
+  "services": [
+    { "key": "oil-change", "name": "Замена масла и фильтра", "category": "ТО", "description": "Масло клиента или наше. Сброс сервисного интервала.", "price": 1500, "duration": "45m", "buffer": "15m", "resources": ["post-1", "post-2"] },
+    { "key": "tire-fitting", "name": "Шиномонтаж 4 колеса", "category": "Колёса", "description": "Снятие, монтаж и балансировка. Цена для радиуса до 17″.", "price": 2400, "priceFrom": true, "duration": "1h", "buffer": "15m", "resources": ["post-1", "post-2"] },
+    { "key": "chassis-diag", "name": "Диагностика ходовой", "category": "Диагностика", "description": "Осмотр на подъёмнике, люфты, тормоза. Выдаём лист с рекомендациями.", "price": 900, "duration": "45m", "resources": ["post-1", "post-2"] },
+    { "key": "brake-pads", "name": "Замена тормозных колодок", "category": "Ремонт", "description": "Одна ось, с проверкой дисков и суппортов.", "price": 2800, "priceFrom": true, "duration": "1h 30m", "buffer": "15m", "resources": ["post-1", "post-2"] },
+    { "key": "alignment", "name": "Развал-схождение", "category": "Колёса", "description": "3D-стенд, регулировка обеих осей, распечатка до и после.", "price": 2600, "duration": "1h", "buffer": "10m", "resources": ["align"] },
+    { "key": "scheduled-service", "name": "ТО по регламенту", "category": "ТО", "description": "Работы по сервисной книжке: жидкости, фильтры, свечи, проверка узлов.", "price": 7900, "priceFrom": true, "duration": "3h", "buffer": "15m", "resources": ["post-1", "post-2"] },
+    { "key": "engine-repair", "name": "Ремонт двигателя", "category": "Ремонт", "description": "Замена ГРМ, прокладок, ремонт головки. Пост закрепляется за машиной на двое суток.", "price": 25000, "priceFrom": true, "duration": "2d", "buffer": "1h", "resources": ["post-2"] }
+  ],
+  "hours": {
+    "mon": "08:00-13:00, 14:00-20:00",
+    "tue": "08:00-13:00, 14:00-20:00",
+    "wed": "08:00-13:00, 14:00-20:00",
+    "thu": "08:00-13:00, 14:00-20:00",
+    "fri": "08:00-13:00, 14:00-20:00",
+    "sat": "09:00-18:00",
+    "sun": "closed"
+  },
+  "closedDates": [{ "date": "2026-11-04", "note": "День народного единства" }],
+  "specialHours": [],
+  "works": [
+    { "key": "brakes", "image": "images/works/brakes.jpg", "caption": "Новые диски и суппорт после ремонта" },
+    { "key": "tires", "image": "images/works/tires.jpg", "caption": "Сезонная замена шин" },
+    { "key": "alignment", "image": "images/works/alignment.jpg", "caption": "Сход-развал на 3D-стенде" },
+    { "key": "oil", "image": "images/works/oil.jpg", "caption": "Замена масла за 45 минут" }
+  ]
+}

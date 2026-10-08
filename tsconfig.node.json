@@ -6,8 +6,8 @@
     "types": ["node"],
     "skipLibCheck": true,
 
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
@@ -25,7 +25,6 @@
     "vitest.config.ts",
     "playwright.config.ts",
     "scripts/**/*.ts",
-    "tests/**/*.ts",
     "supabase/functions/_shared/**/*.ts"
   ]
 }

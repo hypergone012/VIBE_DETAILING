@@ -36,3 +36,6 @@ test-results
 playwright-report
 coverage
 .tenant-build
+
+# Per-environment publish records (tenant ids, owner e-mails)
+tenants/*/.publish/

@@ -1,0 +1,67 @@
+{
+  "$schema": "../business.schema.json",
+  "slug": "graphite",
+  "demo": true,
+  "name": "GRAPHITE Detailing",
+  "shortName": "GRAPHITE",
+  "tagline": "Детейлинг-студия, где машине возвращают глубину цвета",
+  "description": "Полировка, керамика, химчистка и бронеплёнка в двух боксах с гекса-светом. Работаем аккуратно, показываем результат до и после, даём гарантию на покрытия.",
+  "accentColor": "#4690FF",
+  "timezone": "Europe/Moscow",
+  "currency": "RUB",
+  "locale": "ru-RU",
+  "contacts": {
+    "phone": "+7 (495) 000-17-17",
+    "phoneDisplay": "+7 495 000-17-17",
+    "address": "Москва, Огородный проезд, 20с1 (демо-адрес)",
+    "addressNote": "Въезд через шлагбаум со стороны проезда, второй бокс справа. Парковка для клиентов у ворот.",
+    "mapUrl": "https://yandex.ru/maps/?text=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C%20%D0%9E%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%BD%D1%8B%D0%B9%20%D0%BF%D1%80%D0%BE%D0%B5%D0%B7%D0%B4%2C%2020",
+    "geo": { "lat": 55.8152, "lng": 37.6025 },
+    "messengerUrl": "https://t.me/example"
+  },
+  "owner": { "email": "owner@graphite.example" },
+  "images": {
+    "logo": "images/logo.png",
+    "hero": "images/hero.jpg",
+    "heroAlt": "Тёмный автомобиль в боксе под шестигранными лампами"
+  },
+  "infoCards": [
+    { "title": "Гарантия на покрытия", "text": "Керамика — до 3 лет, бронеплёнка — 5 лет. Все условия фиксируем в договоре.", "icon": "shield" },
+    { "title": "Время — по записи", "text": "Машина заезжает в назначенный час, бокс подготовлен заранее. Без очередей.", "icon": "clock" },
+    { "title": "Кофе и Wi‑Fi", "text": "Зона ожидания с видом на бокс: можно наблюдать за работой.", "icon": "coffee" }
+  ],
+  "booking": { "slotStepMinutes": 30, "minLeadMinutes": 120, "horizonDays": 30, "cancelUntilHours": 12 },
+  "resources": [
+    { "key": "box-1", "name": "Бокс 1 · мойка", "kind": "box" },
+    { "key": "box-2", "name": "Бокс 2 · детейлинг", "kind": "box" }
+  ],
+  "services": [
+    { "key": "detailing-wash", "name": "Детейлинг-мойка", "category": "Мойка", "description": "Двухфазная мойка, очистка дисков и проёмов, сушка без разводов.", "price": 3500, "duration": "1h 30m", "buffer": "15m", "resources": "all" },
+    { "key": "interior-clean", "name": "Химчистка салона", "category": "Салон", "description": "Сиденья, потолок, ковры и пластик. Кожа — с очисткой и пропиткой.", "price": 9000, "priceFrom": true, "duration": "4h", "buffer": "30m", "resources": ["box-2"] },
+    { "key": "body-polish", "name": "Полировка кузова", "category": "Кузов", "description": "Восстановительная полировка в 2–3 этапа: убираем голограммы и мелкие царапины.", "price": 18000, "priceFrom": true, "duration": "6h", "buffer": "30m", "resources": ["box-2"] },
+    { "key": "ceramic-coating", "name": "Керамическое покрытие", "category": "Защита", "description": "Подготовка, полировка и два слоя керамики. Машина остаётся в боксе на двое суток.", "price": 35000, "priceFrom": true, "duration": "2d", "buffer": "1h", "resources": ["box-2"] },
+    { "key": "ppf-front", "name": "Бронеплёнка: зона риска", "category": "Защита", "description": "Капот, бампер, фары и зеркала. Полиуретан с самовосстановлением.", "price": 45000, "priceFrom": true, "duration": "1d", "buffer": "1h", "resources": ["box-2"] },
+    { "key": "presale", "name": "Подготовка к продаже", "category": "Комплекс", "description": "Мойка, лёгкая полировка, чернение резины и уборка салона.", "price": 7500, "duration": "3h", "buffer": "15m", "resources": "all" }
+  ],
+  "hours": {
+    "mon": "09:00-21:00",
+    "tue": "09:00-21:00",
+    "wed": "09:00-21:00",
+    "thu": "09:00-21:00",
+    "fri": "09:00-21:00",
+    "sat": "10:00-20:00",
+    "sun": "10:00-18:00"
+  },
+  "closedDates": [
+    { "date": "2026-12-31", "note": "Новогодний выходной" },
+    { "date": "2027-01-01", "note": "Новогодний выходной" }
+  ],
+  "specialHours": [{ "date": "2026-12-30", "hours": "09:00-16:00", "note": "Сокращённый день" }],
+  "works": [
+    { "key": "polish", "image": "images/works/polish.jpg", "caption": "Полировка: слева до, справа после" },
+    { "key": "ceramic", "image": "images/works/ceramic.jpg", "caption": "Керамика держит воду каплями" },
+    { "key": "interior", "image": "images/works/interior.jpg", "caption": "Химчистка и пропитка кожи" },
+    { "key": "wheels", "image": "images/works/wheels.jpg", "caption": "Диски после очистки и защиты" },
+    { "key": "wash", "image": "images/works/wash.jpg", "caption": "Двухфазная детейлинг-мойка" }
+  ]
+}
