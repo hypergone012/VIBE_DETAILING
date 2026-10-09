@@ -732,6 +732,11 @@
     outline: none;
   }
 
+  /* shadcn centres drawer headers on phones; the sheet's header sits next to the back button. */
+  .booking-sheet__head {
+    text-align: start;
+  }
+
   .booking-sheet__body {
     flex: 1 1 auto;
     min-height: 0;

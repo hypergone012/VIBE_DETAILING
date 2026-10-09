@@ -144,7 +144,7 @@ export function BookingSheet() {
       keyboardAware
     >
       <DrawerContent aria-describedby="booking-step-desc" data-testid="booking-sheet">
-        <DrawerHeader className="text-left">
+        <DrawerHeader className="booking-sheet__head">
           <HStack gap={2} vAlign="center">
             {stepIndex > 0 ? (
               <Button
