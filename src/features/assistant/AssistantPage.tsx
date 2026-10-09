@@ -1,6 +1,7 @@
 import { useSearchParams } from 'react-router';
-import { Heading } from '@astryxdesign/core/Heading';
 import { VStack } from '@astryxdesign/core/VStack';
+import { PageFrame } from '@/components/PageFrame';
+import { SectionHeader } from '@/components/SectionHeader';
 import { useTenant } from '@/features/tenant/TenantRoot';
 import { assistantExamples } from '@/features/home/HomePage';
 import { listBookings } from '@/lib/bookingVault';
@@ -15,9 +16,9 @@ export function AssistantPage() {
   const latest = listBookings(slug).find((b) => new Date(b.startsAt).getTime() > now);
 
   return (
-    <main className="app-page app-page--chat" id="main" tabIndex={-1}>
-      <VStack gap={3} paddingBlockStart={6} height="100%">
-        <Heading level={1}>Помощник</Heading>
+    <PageFrame width={760} className="app-main--chat" fill>
+      <VStack gap={4} paddingBlockStart={4} height="100%">
+        <SectionHeader level={1} size="page" eyebrow={data.tenant.short_name} title="Помощник" />
         <AssistantChat
           scope="client"
           slug={slug}
@@ -27,6 +28,6 @@ export function AssistantPage() {
           intro={`Отвечаю по данным «${data.tenant.name}»: услуги, цены, свободное время и как добраться. Записать вас могу через кнопку «Записаться».`}
         />
       </VStack>
-    </main>
+    </PageFrame>
   );
 }

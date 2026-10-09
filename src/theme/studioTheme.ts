@@ -41,9 +41,14 @@ export function studioTheme(accent: string | null | undefined): DefinedTheme {
     typography: {
       // 16px base keeps body copy readable on phones (Astryx default is 14px).
       scale: { base: 16, ratio: 1.2 },
+      // Inter Variable is self-hosted (src/styles/fonts.css); system fonts are the fallback.
       body: {
-        family: 'system-ui',
-        fallbacks: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+        family: 'Inter Variable',
+        fallbacks: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+      },
+      heading: {
+        family: 'Inter Variable',
+        fallbacks: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
       },
     },
     radius: { base: 4, multiplier: 1.25 },
@@ -59,7 +64,7 @@ export function studioTheme(accent: string | null | undefined): DefinedTheme {
       '--color-background-body': ['#F4F5F7', '#000000'],
       '--color-background-surface': ['#FFFFFF', '#0E0F11'],
       '--color-background-card': ['#FFFFFF', '#0E0F11'],
-      '--color-background-popover': ['#FFFFFF', '#141518'],
+      '--color-background-popover': ['#FFFFFF', '#151619'],
       '--color-background-muted': ['#0536590C', '#FFFFFF0F'],
       '--color-text-primary': ['#0A1317', '#FFFFFF'],
       '--color-text-secondary': ['#4E606F', '#B6BAC1'],
@@ -81,6 +86,15 @@ export function studioTheme(accent: string | null | undefined): DefinedTheme {
           },
         },
       ],
+    },
+    // Display type: heavy and tight (design-system MASTER.md); headings slightly tight.
+    components: {
+      heading: {
+        base: { letterSpacing: '-0.015em' },
+        'type:display-1': { fontWeight: '700', letterSpacing: '-0.03em' },
+        'type:display-2': { fontWeight: '700', letterSpacing: '-0.028em' },
+        'type:display-3': { fontWeight: '700', letterSpacing: '-0.022em' },
+      },
     },
     icons: phosphorIconRegistry,
   });

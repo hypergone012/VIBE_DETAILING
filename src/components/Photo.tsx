@@ -8,13 +8,11 @@ export function Photo({
   alt,
   className = 'media-tile',
   eager = false,
-  crossOrigin,
 }: {
   path: string | null | undefined;
   alt: string;
   className?: string;
   eager?: boolean;
-  crossOrigin?: 'anonymous';
 }) {
   const [failed, setFailed] = useState(false);
   const src = mediaUrl(path);
@@ -32,7 +30,8 @@ export function Photo({
       alt={alt}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
-      crossOrigin={crossOrigin}
+      // Always CORS: the glass lens snapshots page images, and the SW caches only CORS responses.
+      crossOrigin="anonymous"
       onError={() => setFailed(true)}
     />
   );

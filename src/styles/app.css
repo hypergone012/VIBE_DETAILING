@@ -22,6 +22,7 @@
 @import "@astryxdesign/core/astryx.css";
 @import "@astryxdesign/core/tailwind-theme.css";
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
+@import "./fonts.css";
 
 /* Tailwind utilities exist only for the shadcn primitives copied into src/components/ui. */
 @source "../components/ui";
@@ -88,34 +89,115 @@
     min-height: 100dvh;
   }
 
-  /* Page column: phones get full width with safe-area gutters, desktop a readable column. */
+  body {
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Page landmark around the Astryx Layout frame (PageFrame): safe areas in
+     landscape and room for the bottom tab bar so nothing hides under it. */
+  .app-main,
   .app-page {
+    display: block;
     width: 100%;
+    padding-inline: var(--app-safe-left) var(--app-safe-right);
+    padding-block-end: calc(var(--app-tabbar-height) + var(--app-safe-bottom) + var(--spacing-8));
+  }
+
+  .app-page {
     max-width: var(--app-content-max);
     margin-inline: auto;
     padding-inline: max(var(--spacing-4), var(--app-safe-left)) max(var(--spacing-4), var(--app-safe-right));
-    padding-block-end: calc(var(--app-tabbar-height) + var(--app-safe-bottom) + var(--spacing-6));
   }
 
-  .app-page--wide {
-    --app-content-max: 1120px;
+  @media (min-width: 1024px) {
+    .app-main,
+    .app-page {
+      padding-block-end: var(--spacing-16);
+    }
+
+    /* The desktop nav carries the logo and phone. */
+    .hero__top {
+      display: none;
+    }
   }
 
-  .app-page--flush-top {
-    padding-block-start: 0;
+  .desktop-nav {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 40;
+    background: color-mix(in srgb, var(--color-background-body) 82%, transparent);
+    -webkit-backdrop-filter: blur(var(--spacing-4)) saturate(140%);
+    backdrop-filter: blur(var(--spacing-4)) saturate(140%);
+    border-block-end: var(--border-width) solid var(--color-border);
+  }
+
+  .desktop-nav__logo {
+    width: var(--spacing-8);
+    height: var(--spacing-8);
+    border-radius: var(--radius-element);
+    object-fit: cover;
+  }
+
+  /* Section eyebrow: small caps label above headings. */
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: var(--font-weight-medium);
+  }
+
+  .icon-accent {
+    color: var(--color-icon-accent);
+    flex: none;
+  }
+
+  .icon-secondary {
+    color: var(--color-icon-secondary);
+    flex: none;
+  }
+
+  /* Wide screens: the booking card follows the reader. */
+  .sticky-aside {
+    position: sticky;
+    inset-block-start: var(--spacing-6);
+  }
+
+  /* About facts: hairline over each fact instead of boxed cards. */
+  .fact {
+    padding-block-start: var(--spacing-4);
+    border-block-start: var(--border-width) solid var(--color-border);
+  }
+
+  /* Step number in the booking card. */
+  .step-index {
+    display: inline-grid;
+    place-items: center;
+    width: var(--spacing-8);
+    height: var(--spacing-8);
+    border-radius: var(--radius-full);
+    background: var(--color-accent-muted);
   }
 
   /* Hero: photo with the glass CTA that scrolls with it. */
   .hero {
     position: relative;
     width: 100%;
-    max-width: var(--app-content-max);
-    margin-inline: auto;
-    min-height: min(78dvh, 640px);
+    min-height: min(86svh, 760px);
     overflow: hidden;
-    border-end-start-radius: var(--radius-page);
-    border-end-end-radius: var(--radius-page);
     background: var(--color-background-surface);
+  }
+
+  /* Wide screens: the photo becomes a framed banner aligned with the content column. */
+  @media (min-width: 1024px) {
+    .hero {
+      width: calc(100% - 2 * var(--spacing-6));
+      max-width: calc(1120px - 2 * var(--spacing-6));
+      min-height: 0;
+      height: min(72vh, 620px);
+      margin: var(--spacing-6) auto 0;
+      border-radius: var(--radius-page);
+    }
   }
 
   .hero__media {
@@ -124,20 +206,43 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 50% 40%;
+  }
+
+  @media (min-width: 1024px) {
+    /* Portrait hero photos in a wide banner: keep the car (lower half) in frame. */
+    .hero__media {
+      object-position: 50% 62%;
+    }
   }
 
   .hero__scrim {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-background-body) 55%, transparent) 0%,
-      transparent 28%,
-      transparent 48%,
-      color-mix(in srgb, var(--color-background-body) 82%, transparent) 86%,
-      var(--color-background-body) 100%
-    );
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-background-body) 60%, transparent) 0%,
+        transparent 22%,
+        transparent 40%,
+        color-mix(in srgb, var(--color-background-body) 70%, transparent) 70%,
+        var(--color-background-body) 100%
+      );
     pointer-events: none;
+  }
+
+  @media (min-width: 1024px) {
+    /* Text sits on the left third: darken that side instead of the whole photo. */
+    .hero__scrim {
+      background:
+        linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--color-background-body) 78%, transparent) 0%,
+          color-mix(in srgb, var(--color-background-body) 35%, transparent) 50%,
+          transparent 75%
+        ),
+        linear-gradient(180deg, color-mix(in srgb, var(--color-background-body) 45%, transparent) 0%, transparent 25%);
+    }
   }
 
   .hero__content {
@@ -145,7 +250,23 @@
     z-index: 3;
     inset-inline: 0;
     inset-block-end: 0;
-    padding: var(--spacing-6) max(var(--spacing-4), var(--app-safe-left)) var(--spacing-6);
+    padding: var(--spacing-6) max(var(--spacing-4), var(--app-safe-left)) var(--spacing-8);
+  }
+
+  @media (min-width: 1024px) {
+    .hero__content {
+      inset-inline-end: auto;
+      max-width: 640px;
+      padding: var(--spacing-10);
+    }
+
+    .hero__actions {
+      max-width: 360px;
+    }
+  }
+
+  .hero__pin {
+    color: var(--color-icon-accent);
   }
 
   .hero__top {
@@ -153,7 +274,14 @@
     z-index: 3;
     inset-inline: 0;
     inset-block-start: 0;
-    padding: calc(var(--app-safe-top) + var(--spacing-3)) var(--spacing-4) 0;
+    padding: calc(var(--app-safe-top) + var(--spacing-3)) max(var(--spacing-4), var(--app-safe-right)) 0
+      max(var(--spacing-4), var(--app-safe-left));
+  }
+
+  @media (min-width: 1024px) {
+    .hero__top {
+      padding: var(--spacing-6) var(--spacing-10) 0;
+    }
   }
 
   .hero__logo {
@@ -194,6 +322,33 @@
     inset: 0;
     border-radius: inherit;
     pointer-events: none;
+  }
+
+  /* Edge light above the lens (its own layer: liquid-gl owns the pane's styles):
+     reads as a raised glass control even over dark parts of the photo. */
+  .glass-rim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-text-primary) 16%, transparent) 0%,
+      color-mix(in srgb, var(--color-text-primary) 4%, transparent) 55%,
+      color-mix(in srgb, var(--color-text-primary) 8%, transparent) 100%
+    );
+    box-shadow:
+      inset 0 var(--border-width) 0 color-mix(in srgb, var(--color-text-primary) 45%, transparent),
+      inset 0 0 0 var(--border-width) color-mix(in srgb, var(--color-text-primary) 22%, transparent),
+      0 var(--spacing-2) var(--spacing-6) color-mix(in srgb, var(--color-background-body) 55%, transparent);
+  }
+
+  /* GridSpan is itself a grid: give its single track a 0 minimum so wide content
+     (carousels, long rows) scrolls inside instead of stretching the column. */
+  .grid-cell {
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .glass__label {
@@ -274,7 +429,11 @@
 
   .tabbar__item[aria-current="page"] {
     color: var(--color-text-primary);
-    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+    background: color-mix(in srgb, var(--color-text-primary) 10%, transparent);
+  }
+
+  .tabbar__item[aria-current="page"] svg {
+    color: var(--color-icon-accent);
   }
 
   .tabbar__item svg {
@@ -424,14 +583,14 @@
   }
 
   .preview-ribbon {
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    padding: calc(var(--app-safe-top) + var(--spacing-1)) var(--spacing-4) var(--spacing-1);
-    background: var(--color-warning);
-    color: var(--color-on-warning);
-    font-size: var(--text-supporting-size);
-    font-weight: var(--font-weight-semibold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+    margin: 0;
+    padding: calc(var(--app-safe-top) + var(--spacing-2)) var(--spacing-4) var(--spacing-2);
+    background: var(--color-background-popover);
+    border-block-end: var(--border-width) solid var(--color-border);
     text-align: center;
   }
 
@@ -457,7 +616,11 @@
 
   .work-tile {
     display: grid;
-    gap: var(--spacing-1);
+    align-content: start;
+    gap: var(--spacing-2);
+    width: min(72vw, 300px);
+    flex: none;
+    scroll-snap-align: start;
     padding: 0;
     border: 0;
     background: none;
@@ -473,10 +636,25 @@
     outline-offset: var(--spacing-0-5);
   }
 
-  .app-page--chat {
-    display: flex;
-    flex-direction: column;
-    min-height: calc(100dvh - var(--app-tabbar-height) - var(--app-safe-bottom));
+  .media-fill {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-container);
+    background: var(--color-background-surface);
+  }
+
+  /* Chat: the page is exactly one screen tall; ChatLayout scrolls its messages. */
+  .app-main--chat {
+    height: calc(100dvh - var(--app-tabbar-height) - var(--app-safe-bottom) - var(--spacing-4));
+    padding-block-end: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .app-main--chat {
+      height: calc(100dvh - var(--spacing-16));
+    }
   }
 
   .skip-link:focus {

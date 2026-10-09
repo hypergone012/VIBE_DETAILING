@@ -1,6 +1,7 @@
-import { Heading } from '@astryxdesign/core/Heading';
 import { Text } from '@astryxdesign/core/Text';
 import { VStack } from '@astryxdesign/core/VStack';
+import { PageFrame } from '@/components/PageFrame';
+import { SectionHeader } from '@/components/SectionHeader';
 import { useTenant } from '@/features/tenant/TenantRoot';
 
 /** Plain-language consent text shown next to the booking form. */
@@ -8,9 +9,9 @@ export function PrivacyPage() {
   const { data } = useTenant();
   const t = data.tenant;
   return (
-    <main className="app-page" id="main" tabIndex={-1}>
-      <VStack gap={4} paddingBlockStart={6}>
-        <Heading level={1}>Как используются ваши данные</Heading>
+    <PageFrame width={680}>
+      <VStack gap={5} paddingBlockStart={4}>
+        <SectionHeader level={1} size="page" eyebrow={t.short_name} title="Как используются ваши данные" />
         <Text>
           При записи вы сообщаете имя, телефон и автомобиль. Эти данные получает только «{t.name}», чтобы подготовить бокс,
           связаться с вами при изменениях и выполнить работу.
@@ -27,6 +28,6 @@ export function PrivacyPage() {
           Помощник отвечает по данным студии и не получает ваши контакты.
         </Text>
       </VStack>
-    </main>
+    </PageFrame>
   );
 }

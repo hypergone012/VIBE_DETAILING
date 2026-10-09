@@ -12,7 +12,7 @@ import { MetadataList, MetadataListItem } from '@astryxdesign/core/MetadataList'
 import { StatusDot } from '@astryxdesign/core/StatusDot';
 import { Text } from '@astryxdesign/core/Text';
 import { VStack } from '@astryxdesign/core/VStack';
-import { CalendarBlank, MapPin, Phone } from '@phosphor-icons/react';
+import { ArrowLeft, CalendarBlank, MapPin, Phone } from '@phosphor-icons/react';
 import { publicApi } from '@/api/publicApi';
 import { humanError } from '@/api/errors';
 import type { PublicBooking } from '@/api/schemas';
@@ -20,6 +20,8 @@ import { ErrorState, LoadingRows } from '@/components/QueryState';
 import { useTenant } from '@/features/tenant/TenantRoot';
 import { forgetBooking, listBookings, saveBooking, type VaultEntry } from '@/lib/bookingVault';
 import { formatDuration, formatInStudio, formatMoney, formatPhoneHref, formatSlotLong } from '@/lib/format';
+import { PageFrame } from '@/components/PageFrame';
+import { SectionHeader } from '@/components/SectionHeader';
 import { ReminderPanel } from './ReminderPanel';
 import { bookingQueryKey, useBookingByToken } from './useBookingByToken';
 import { useBookingRoute } from '@/features/booking/useBookingRoute';
@@ -86,9 +88,9 @@ export function MyBookingsPage() {
   const past = rows.filter((r) => !upcoming.includes(r));
 
   return (
-    <main className="app-page" id="main" tabIndex={-1}>
-      <VStack gap={6} paddingBlockStart={6}>
-        <Heading level={1}>Моя запись</Heading>
+    <PageFrame width={760}>
+      <VStack gap={8} paddingBlockStart={4}>
+        <SectionHeader level={1} size="page" eyebrow={data.tenant.short_name} title="Моя запись" />
         {importState === 'importing' ? <LoadingRows rows={1} label="Открываем запись по ссылке" /> : null}
         {importState === 'failed' ? (
           <Banner status="error" title="Ссылка на запись не работает" description="Возможно, студия выдала новую ссылку. Уточните у студии." />
@@ -125,7 +127,7 @@ export function MyBookingsPage() {
           </VStack>
         ) : null}
       </VStack>
-    </main>
+    </PageFrame>
   );
 }
 
@@ -169,15 +171,15 @@ export function BookingDetailPage() {
 
   if (!entry) {
     return (
-      <main className="app-page" id="main" tabIndex={-1}>
-        <VStack gap={4} paddingBlockStart={6}>
+      <PageFrame width={760}>
+        <VStack gap={4} paddingBlockStart={4}>
           <EmptyState
             title="Запись не найдена на этом устройстве"
             description="Откройте ссылку на запись, которую прислала студия, или запишитесь снова."
             actions={<Button label="К моим записям" href={`/s/${slug}/my`} />}
           />
         </VStack>
-      </main>
+      </PageFrame>
     );
   }
 
@@ -186,9 +188,11 @@ export function BookingDetailPage() {
   const phoneHref = formatPhoneHref(b?.studio.phone ?? data.tenant.phone);
 
   return (
-    <main className="app-page" id="main" tabIndex={-1}>
-      <VStack gap={5} paddingBlockStart={6}>
-        <Button label="Все мои записи" variant="ghost" size="sm" href={`/s/${slug}/my`} />
+    <PageFrame width={760}>
+      <VStack gap={6} paddingBlockStart={4}>
+        <HStack>
+          <Button label="Все мои записи" variant="ghost" size="sm" icon={<ArrowLeft weight="bold" />} href={`/s/${slug}/my`} />
+        </HStack>
         {query.isPending ? <LoadingRows rows={4} label="Загружаем запись" /> : null}
         {query.isError ? <ErrorState error={query.error} onRetry={() => void query.refetch()} /> : null}
         {b ? (
@@ -201,8 +205,12 @@ export function BookingDetailPage() {
                   Код {b.code}
                 </Text>
               </HStack>
-              <Heading level={1}>{b.service_name}</Heading>
-              <Text type="large">{formatSlotLong(b.starts_at, tz)}</Text>
+              <Heading level={1} type="display-3" textWrap="balance">
+                {b.service_name}
+              </Heading>
+              <Text type="large" hasTabularNumbers>
+                {formatSlotLong(b.starts_at, tz)}
+              </Text>
             </VStack>
             {b.is_demo ? <Banner status="info" title="Это запись в образце студии" description="Студия ещё не запущена — запись тестовая." /> : null}
             <MetadataList columns="single">
@@ -260,6 +268,6 @@ export function BookingDetailPage() {
           </>
         ) : null}
       </VStack>
-    </main>
+    </PageFrame>
   );
 }

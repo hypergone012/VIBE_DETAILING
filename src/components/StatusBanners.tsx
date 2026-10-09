@@ -1,10 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Banner } from '@astryxdesign/core/Banner';
+import { StatusDot } from '@astryxdesign/core/StatusDot';
+import { Text } from '@astryxdesign/core/Text';
 
+/** Preview studios are marked on every screen: demo bookings, no real notifications. */
 export function PreviewRibbon() {
   return (
     <p className="preview-ribbon" role="note">
-      Образец: записи тестовые, уведомления не отправляются
+      <StatusDot variant="warning" label="Образец" />
+      <Text type="supporting" color="secondary">
+        <Text type="supporting" weight="semibold" color="primary">
+          Образец студии:
+        </Text>{' '}
+        записи тестовые, без уведомлений
+      </Text>
     </p>
   );
 }

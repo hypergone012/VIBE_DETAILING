@@ -3,6 +3,8 @@ import { Outlet, useLocation, useSearchParams } from 'react-router';
 import { Button } from '@astryxdesign/core/Button';
 import { useToast } from '@astryxdesign/core/Toast';
 import { BottomTabBar } from '@/components/BottomTabBar';
+import { DesktopNav } from '@/components/DesktopNav';
+import { useIsWide } from '@/components/PageFrame';
 import { OfflineBanner, PreviewRibbon } from '@/components/StatusBanners';
 import { useTenant } from '@/features/tenant/TenantRoot';
 import { listBookings } from '@/lib/bookingVault';
@@ -28,6 +30,7 @@ export function ClientLayout() {
     if (idle) idle(preload);
     else window.setTimeout(preload, 2000);
   }, []);
+  const wide = useIsWide();
   const now = useNow();
   const upcoming = listBookings(slug).filter((b) => new Date(b.startsAt).getTime() > now - 86_400_000).length;
 
@@ -61,8 +64,9 @@ export function ClientLayout() {
       </a>
       {isPreview ? <PreviewRibbon /> : null}
       <OfflineBanner stale={isStale} />
+      {wide ? <DesktopNav myCount={upcoming} /> : null}
       <Outlet />
-      <BottomTabBar base={`/s/${slug}`} myCount={upcoming} />
+      {wide ? null : <BottomTabBar base={`/s/${slug}`} myCount={upcoming} />}
       {sheetMounted ? (
         <Suspense fallback={null}>
           <BookingSheet />

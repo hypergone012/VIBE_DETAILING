@@ -25,7 +25,7 @@ const base = scopeUrl.pathname.replace(/\/$/, ''); // "/s/{slug}"
 const slug = /^\/s\/([^/]+)$/.exec(base)?.[1] ?? 'root';
 const prefix = `studio-${slug}`;
 const SHELL_CACHE = `${prefix}-shell-v1`;
-const MEDIA_CACHE = `${prefix}-media-v1`;
+const MEDIA_CACHE = `${prefix}-media-v2`;
 const ASSET_CACHE = `${prefix}-assets-v1`;
 const OWN_CACHES = [SHELL_CACHE, MEDIA_CACHE, ASSET_CACHE];
 
@@ -86,13 +86,16 @@ registerRoute(
   new StaleWhileRevalidate({ cacheName: ASSET_CACHE }),
 );
 
-// Public studio photos from Supabase Storage (never private data).
+// Public studio photos from Supabase Storage (never private data). Every <img> of
+// tenant media is requested with crossOrigin="anonymous" (the liquid-glass lens
+// snapshots them via CORS), so only real 200 CORS responses are cached: an opaque
+// entry would break those CORS reads.
 registerRoute(
   ({ url, request }) => request.method === 'GET' && url.pathname.includes('/storage/v1/object/public/tenant-media/'),
   new CacheFirst({
     cacheName: MEDIA_CACHE,
     plugins: [
-      new CacheableResponsePlugin({ statuses: [0, 200] }),
+      new CacheableResponsePlugin({ statuses: [200] }),
       new ExpirationPlugin({ maxEntries: 80, maxAgeSeconds: 30 * 24 * 3600, purgeOnQuotaError: true }),
     ],
   }),

@@ -27,11 +27,13 @@
     "local:bootstrap": "pnpm db:start && pnpm db:reset && pnpm demo:media",
     "check:no-business-strings": "tsx scripts/check-no-business-strings.ts",
     "deploy:vercel": "vercel deploy --prebuilt --prod",
-    "deploy:cloudflare": "wrangler pages deploy dist --project-name ${CF_PAGES_PROJECT:-studio-booking}"
+    "deploy:cloudflare": "wrangler pages deploy dist --project-name ${CF_PAGES_PROJECT:-studio-booking}",
+    "astryx": "node node_modules/@astryxdesign/cli/clients/cli/bin/astryx.mjs"
   },
   "dependencies": {
     "@astryxdesign/core": "0.6.6",
     "@base-ui/react": "1.8.0",
+    "@fontsource-variable/inter": "^5.3.0",
     "@phosphor-icons/react": "2.1.10",
     "@stylexjs/stylex": "^0.19.1",
     "@supabase/postgrest-js": "2.117.3",

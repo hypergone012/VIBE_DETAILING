@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Banner } from '@astryxdesign/core/Banner';
 import { Button } from '@astryxdesign/core/Button';
 import { HStack } from '@astryxdesign/core/HStack';
+import { Grid } from '@astryxdesign/core/Grid';
 import { Text } from '@astryxdesign/core/Text';
 import { VStack } from '@astryxdesign/core/VStack';
 import { publicApi } from '@/api/publicApi';
@@ -95,7 +96,7 @@ export function TimeStep({
 
       {query.data ? (
         <>
-          <div className="day-strip" role="group" aria-label="Дата">
+          <HStack gap={2} className="day-strip" role="group" aria-label="Дата">
             {days.map((d) => {
               const closed = d.total === 0;
               return (
@@ -125,7 +126,7 @@ export function TimeStep({
                 </button>
               );
             })}
-          </div>
+          </HStack>
 
           {selected ? (
             <VStack gap={2}>
@@ -134,7 +135,7 @@ export function TimeStep({
                 <Text color="secondary">В этот день студия не принимает машины на эту услугу.</Text>
               ) : (
                 <>
-                  <div className="slot-grid" role="group" aria-label="Время">
+                  <Grid columns={{ minWidth: 84, repeat: 'fill' }} gap={2} role="group" aria-label="Время">
                     {selected.slots.map((s) => (
                       <button
                         key={s.starts_at}
@@ -148,7 +149,7 @@ export function TimeStep({
                         {s.time}
                       </button>
                     ))}
-                  </div>
+                  </Grid>
                   <Text type="supporting" color="secondary">
                     Зачёркнутое время уже занято.
                   </Text>

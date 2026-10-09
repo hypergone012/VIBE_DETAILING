@@ -112,41 +112,47 @@ export function AssistantChat({
         isStreaming={ask.isPending}
         align="top"
         emptyState={
-          <VStack gap={4} padding={4}>
-            <Text color="secondary">{intro}</Text>
+          <VStack gap={4} paddingBlockStart={2}>
+            <Text color="secondary" textWrap="pretty">
+              {intro}
+            </Text>
             <HStack gap={2} wrap="wrap">
               {examples.map((q) => (
-                <Token key={q} label={q} onClick={() => send(q)} />
+                <Token key={q} label={q} size="lg" onClick={() => send(q)} />
               ))}
             </HStack>
           </VStack>
         }
       >
-        {messages.map((m) =>
-          m.role === 'user' ? (
-            <ChatMessage key={m.id} sender="user">
-              <ChatMessageBubble>{m.content}</ChatMessageBubble>
-            </ChatMessage>
-          ) : (
-            <ChatMessage key={m.id} sender="assistant">
-              {m.meta?.tool_calls.length ? (
-                <ChatToolCalls
-                  label={`Проверено по данным студии: ${m.meta.tool_calls.length}`}
-                  calls={m.meta.tool_calls.map((c, i) => ({
-                    key: `${m.id}-${i}`,
-                    name: c.label,
-                    status: c.ok ? 'complete' : 'error',
-                  }))}
-                />
-              ) : null}
-              <ChatMessageBubble>{m.content}</ChatMessageBubble>
-            </ChatMessage>
-          ),
-        )}
-        {ask.isPending ? (
-          <ChatMessage sender="assistant">
-            <ChatMessageBubble variant="ghost">Смотрю данные студии…</ChatMessageBubble>
-          </ChatMessage>
+        {messages.length || ask.isPending ? (
+          <>
+            {messages.map((m) =>
+              m.role === 'user' ? (
+                <ChatMessage key={m.id} sender="user">
+                  <ChatMessageBubble>{m.content}</ChatMessageBubble>
+                </ChatMessage>
+              ) : (
+                <ChatMessage key={m.id} sender="assistant">
+                  {m.meta?.tool_calls.length ? (
+                    <ChatToolCalls
+                      label={`Проверено по данным студии: ${m.meta.tool_calls.length}`}
+                      calls={m.meta.tool_calls.map((c, i) => ({
+                        key: `${m.id}-${i}`,
+                        name: c.label,
+                        status: c.ok ? 'complete' : 'error',
+                      }))}
+                    />
+                  ) : null}
+                  <ChatMessageBubble>{m.content}</ChatMessageBubble>
+                </ChatMessage>
+              ),
+            )}
+            {ask.isPending ? (
+              <ChatMessage sender="assistant">
+                <ChatMessageBubble variant="ghost">Смотрю данные студии…</ChatMessageBubble>
+              </ChatMessage>
+            ) : null}
+          </>
         ) : null}
       </ChatMessageList>
       {lastDegraded ? (

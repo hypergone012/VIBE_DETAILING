@@ -8,8 +8,8 @@ import { slotsQueryKey } from '@/features/booking/TimeStep';
 import { useTenant } from '@/features/tenant/TenantRoot';
 import { formatSlotLong } from '@/lib/format';
 
-/** "Ближайшее окно" for the first bookable service — real slots, not a guess. */
-export function NextSlotHint() {
+/** Nearest free time for the first bookable service — real slots, not a guess. */
+export function NextSlotHint({ compact = false }: { compact?: boolean }) {
   const { slug, data } = useTenant();
   const service = data.services.find((s) => s.bookable);
   const query = useQuery({
@@ -19,21 +19,38 @@ export function NextSlotHint() {
     staleTime: 30_000,
   });
   if (!service) return null;
-  if (query.isPending) return <Skeleton width={220} height={20} />;
+  if (query.isPending) return <Skeleton width={compact ? 200 : 240} height={20} />;
   if (query.isError) return null;
   const next = query.data.days.flatMap((d) => d.slots).find((s) => s.available);
+  const when = next ? formatSlotLong(next.starts_at, data.tenant.timezone) : null;
+
   return (
     <HStack gap={2} vAlign="center">
-      <Clock size={18} weight="bold" color="var(--color-icon-accent)" aria-hidden />
-      <Text color="secondary">
-        {next ? (
-          <>
-            Ближайшее окно на «{service.name}»: <Text weight="semibold" color="primary">{formatSlotLong(next.starts_at, data.tenant.timezone)}</Text>
-          </>
-        ) : (
-          'На ближайшие две недели всё занято — позвоните в студию.'
-        )}
-      </Text>
+      <Clock size={16} weight="bold" aria-hidden className="icon-accent" />
+      {compact ? (
+        <Text type="supporting" color="secondary">
+          {when ? (
+            <>
+              Ближайшее окно — <Text type="supporting" weight="semibold" color="primary" hasTabularNumbers>{when}</Text>
+            </>
+          ) : (
+            'Ближайшие две недели заняты — позвоните в студию'
+          )}
+        </Text>
+      ) : (
+        <Text color="secondary">
+          {when ? (
+            <>
+              Ближайшее окно на «{service.name}»:{' '}
+              <Text weight="semibold" color="primary" hasTabularNumbers>
+                {when}
+              </Text>
+            </>
+          ) : (
+            'На ближайшие две недели всё занято — позвоните в студию.'
+          )}
+        </Text>
+      )}
     </HStack>
   );
 }

@@ -16,6 +16,12 @@ Project-specific guidance for AI coding agents.
 - UI: Astryx components first (run `pnpm exec astryx component <Name>` before using an
   unknown prop), tokens for every value, shadcn only for the Base UI Drawer in
   `src/components/ui`. Keep the CSS layer order declared in `src/styles/app.css`.
+- Design skills (installed in `.claude/skills/`) are mandatory for any UI change:
+  `astryx` (template-first Astryx workflow) and `ui-ux-pro-max` (design intelligence;
+  run `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --domain <d>`).
+  The agreed design system is `design-system/studio-booking/MASTER.md`; page overrides go
+  in `design-system/studio-booking/pages/`. Finish UI work with the pre-delivery checklist
+  in `.claude/skills/ui-ux-pro-max/references/pro-rules.md` and screenshots at 375px and 1440px.
 - Every network screen renders loading / error / empty / success states.
 - Run `pnpm verify` (typecheck, lint, unit, db tests) before committing.
 
