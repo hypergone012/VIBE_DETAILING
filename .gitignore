@@ -40,3 +40,5 @@ coverage
 # Per-environment publish records (tenant ids, owner e-mails)
 tenants/*/.publish/
 tmp-tpl/
+__pycache__/
+*.pyc
