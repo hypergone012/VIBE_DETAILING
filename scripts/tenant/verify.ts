@@ -10,6 +10,9 @@
  * --browser additionally opens the page in Chromium (mobile), waits for the app,
  * asks Chrome DevTools for installability errors and checks the service worker scope.
  */
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { existsSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 import sharp from 'sharp';
@@ -171,10 +174,13 @@ if (values.browser) {
   await check('Браузер: приложение загрузилось, PWA устанавливается, SW со scope студии', async () => {
     const { chromium, devices } = await import('@playwright/test');
     const executablePath = process.env.PW_CHROMIUM_PATH ?? (existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined);
-    const browser = await chromium.launch(executablePath ? { executablePath } : {});
+    // A persistent profile: Chrome never offers installation in incognito, and a
+    // plain Playwright context is incognito-like ("in-incognito").
+    const profile = await mkdtemp(join(tmpdir(), 'tenant-verify-'));
+    const { defaultBrowserType: _ignored, ...pixel } = devices['Pixel 7'];
+    const context = await chromium.launchPersistentContext(profile, { ...pixel, ...(executablePath ? { executablePath } : {}) });
     try {
-      const context = await browser.newContext({ ...devices['Pixel 7'] });
-      const page = await context.newPage();
+      const page = context.pages()[0] ?? (await context.newPage());
       const errors: string[] = [];
       page.on('pageerror', (e) => errors.push(e.message));
       page.on('console', (m) => {
@@ -196,11 +202,12 @@ if (values.browser) {
       };
       assert(installabilityErrors.length === 0, `Chrome: ${installabilityErrors.map((e) => e.errorId).join(', ')}`);
       const cacheNames = await page.evaluate(() => caches.keys());
-      assert(cacheNames.some((n) => n.startsWith(`studio-${location.pathname.split('/')[2]}`)), `кэши: ${cacheNames.join(', ')}`);
+      assert(cacheNames.some((n) => n.startsWith(`studio-${base.split("/")[2]}`)), `кэши: ${cacheNames.join(", ")}`);
       assert(errors.length === 0, `ошибки в консоли: ${errors.slice(0, 3).join(' | ')}`);
       return `SW scope ${scope}; кэши: ${cacheNames.length}`;
     } finally {
-      await browser.close();
+      await context.close();
+      await rm(profile, { recursive: true, force: true });
     }
   });
 }

@@ -24,6 +24,9 @@ export default defineConfig({
         globPatterns: ['assets/**/*.{js,css,woff2,svg,png,webp}'],
         globIgnores: ['**/s/**', '**/index.html'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+        // The same worker is served from /s/{slug}/sw.js: precache URLs must be
+        // absolute, or they would resolve to /s/{slug}/assets/… and miss offline.
+        modifyURLPrefix: { 'assets/': '/assets/' },
       },
       devOptions: { enabled: false },
     }),

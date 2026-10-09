@@ -426,3 +426,7 @@ enabled = true
 # calling owner_session (membership check in SQL).
 [functions.assistant]
 verify_jwt = false
+
+# Called by Supabase Cron via pg_net with the x-dispatch-secret header (Vault).
+[functions.notifications-dispatch]
+verify_jwt = false

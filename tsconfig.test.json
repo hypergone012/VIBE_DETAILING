@@ -4,5 +4,5 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.test.tsbuildinfo",
     "noUncheckedIndexedAccess": false
   },
-  "include": ["tests/**/*.ts"]
+  "include": ["types/**/*.d.ts", "tests/**/*.ts"]
 }

@@ -34,7 +34,11 @@ export function useTenant(): TenantContextValue {
 export const tenantQueryKey = (slug: string) => ['tenant', slug] as const;
 const cacheKey = (slug: string) => `tenant-cache:${slug}`;
 
-/** Public studio data. Cached on the device (public info only) for offline viewing. */
+/**
+ * Public studio data. Cached on the device (public info only) so the studio page
+ * opens offline: the saved copy is initial data marked stale (updatedAt 0), so it
+ * renders at once and is refreshed from the network whenever there is one.
+ */
 export function useTenantQuery(slug: string) {
   return useQuery({
     queryKey: tenantQueryKey(slug),
@@ -43,7 +47,8 @@ export function useTenantQuery(slug: string) {
       local.set(cacheKey(slug), data);
       return data;
     },
-    placeholderData: () => local.get<PublicTenant | undefined>(cacheKey(slug), undefined),
+    initialData: () => local.get<PublicTenant | undefined>(cacheKey(slug), undefined),
+    initialDataUpdatedAt: 0,
   });
 }
 
@@ -83,7 +88,8 @@ export function TenantRoot({ boot }: { boot: Boot }) {
       slug,
       data: query.data,
       isPreview: query.data.tenant.status === 'preview',
-      isStale: query.isPlaceholderData || (query.isError && !query.isFetching),
+      // Showing the device copy: offline (query paused), or the refresh failed.
+      isStale: query.fetchStatus === 'paused' || (query.isError && !query.isFetching),
     };
     return (
       <Shell accent={accent}>
