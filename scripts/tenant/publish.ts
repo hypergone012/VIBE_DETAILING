@@ -77,7 +77,7 @@ console.log(
     ? 'Статус: LIVE — записи настоящие, уведомления включены.'
     : 'Статус: ОБРАЗЕЦ — записи помечаются как демо, уведомления не отправляются. Запуск: --live.',
 );
-console.log('Оболочка (иконка, manifest) попадёт на хостинг при следующей сборке/деплое: pnpm build && pnpm run deploy:vercel (или deploy:cloudflare).');
+console.log('Оболочка (иконка, manifest) попадёт на хостинг при следующем деплое: pnpm deploy:vercel (Vercel соберёт сам) или pnpm deploy:cloudflare.');
 
 const recordFile = writePublishRecord(b.slug, new URL(env.supabaseUrl).host, {
   published_at: new Date().toISOString(),
