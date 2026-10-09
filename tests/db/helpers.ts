@@ -196,10 +196,13 @@ export async function createOwner(pool: pg.Pool, slug: string): Promise<string> 
   const userId = randomUUID();
   await su(
     pool,
+    // GoTrue scans the token columns as strings: they must be '' (not NULL), or
+    // the Auth admin API ("listUsers") fails for every user afterwards.
     `insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at,
+                             confirmation_token, recovery_token, email_change_token_new, email_change,
                              raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
      values ($1, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', $2,
-             extensions.crypt('test-password-123', extensions.gen_salt('bf')), now(),
+             extensions.crypt('test-password-123', extensions.gen_salt('bf')), now(), '', '', '', '',
              '{"provider":"email","providers":["email"]}', '{}', now(), now())`,
     [userId, `owner-${userId.slice(0, 8)}@example.test`],
   );

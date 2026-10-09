@@ -114,7 +114,7 @@
   @media (min-width: 1024px) {
     .app-main,
     .app-page {
-      padding-block-end: var(--spacing-16);
+      padding-block-end: calc(var(--spacing-8) * 2);
     }
 
     /* The desktop nav carries the logo and phone. */
@@ -138,6 +138,63 @@
     height: var(--spacing-8);
     border-radius: var(--radius-element);
     object-fit: cover;
+  }
+
+  /* Owner cabinet */
+  .schedule-time {
+    min-width: calc(var(--spacing-12) + var(--spacing-2));
+  }
+
+  .owner-login__logo,
+  .logo-preview {
+    width: calc(var(--spacing-8) * 2);
+    height: calc(var(--spacing-8) * 2);
+    border-radius: var(--radius-container);
+    object-fit: cover;
+    background: var(--color-background-surface);
+  }
+
+  .color-swatch {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: var(--size-element-md);
+    height: var(--size-element-md);
+    border-radius: var(--radius-element);
+    border: var(--border-width) solid var(--color-border);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .hours-row {
+    padding-block: var(--spacing-3);
+    border-block-end: var(--border-width) solid var(--color-border);
+  }
+
+  /* Phones: keep the save action reachable above the tab bar on long forms. */
+  .save-bar {
+    position: sticky;
+    inset-block-end: calc(var(--app-tabbar-height) + var(--app-safe-bottom) + var(--spacing-3));
+    z-index: 5;
+    padding: var(--spacing-3);
+    border-radius: var(--radius-container);
+    background: var(--color-background-popover);
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  @media (min-width: 1024px) {
+    .save-bar {
+      inset-block-end: var(--spacing-4);
+    }
+  }
+
+  /* Astryx list rows with href/onClick render the link only over the label. On
+     touch screens people tap anywhere in the row (time, price, status), so the
+     row's own link/button is stretched over the whole row (stretched-link). */
+  li[data-astryx-pressable] > :is(a[href], button)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
   }
 
   /* Section eyebrow: small caps label above headings. */
@@ -653,7 +710,7 @@
 
   @media (min-width: 1024px) {
     .app-main--chat {
-      height: calc(100dvh - var(--spacing-16));
+      height: calc(100dvh - calc(var(--spacing-8) * 2));
     }
   }
 

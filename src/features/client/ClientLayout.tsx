@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { Outlet, useLocation, useSearchParams } from 'react-router';
 import { Button } from '@astryxdesign/core/Button';
 import { useToast } from '@astryxdesign/core/Toast';
+import { CalendarCheck, House, ListBullets } from '@phosphor-icons/react';
 import { BottomTabBar } from '@/components/BottomTabBar';
 import { DesktopNav } from '@/components/DesktopNav';
 import { useIsWide } from '@/components/PageFrame';
@@ -66,7 +67,15 @@ export function ClientLayout() {
       <OfflineBanner stale={isStale} />
       {wide ? <DesktopNav myCount={upcoming} /> : null}
       <Outlet />
-      {wide ? null : <BottomTabBar base={`/s/${slug}`} myCount={upcoming} />}
+      {wide ? null : (
+        <BottomTabBar
+          items={[
+            { to: `/s/${slug}/`, label: 'Главная', icon: House, end: true },
+            { to: `/s/${slug}/services`, label: 'Услуги', icon: ListBullets },
+            { to: `/s/${slug}/my`, label: 'Моя запись', icon: CalendarCheck, count: upcoming },
+          ]}
+        />
+      )}
       {sheetMounted ? (
         <Suspense fallback={null}>
           <BookingSheet />

@@ -1,15 +1,20 @@
 import { useRef } from 'react';
 import { NavLink, useLocation } from 'react-router';
-import { CalendarCheck, House, ListBullets } from '@phosphor-icons/react';
+import type { Icon as PhosphorIcon } from '@phosphor-icons/react';
 import { GlassPane, useLiquidGlass } from './useLiquidGlass';
 
-interface Props {
-  base: string;
-  myCount: number;
+export interface TabItem {
+  to: string;
+  label: string;
+  icon: PhosphorIcon;
+  /** Match the path exactly (index tabs). */
+  end?: boolean;
+  /** Count announced to screen readers (e.g. upcoming bookings). */
+  count?: number;
 }
 
-/** Fixed glass navigation. Pages reserve its height (.app-page padding) so nothing hides under it. */
-export function BottomTabBar({ base, myCount }: Props) {
+/** Fixed glass navigation for phones. Pages reserve its height (.app-main padding). */
+export function BottomTabBar({ items, label = 'Основная навигация' }: { items: TabItem[]; label?: string }) {
   const ref = useRef<HTMLElement>(null);
   const pane = useRef<HTMLSpanElement>(null);
   const location = useLocation();
@@ -21,22 +26,16 @@ export function BottomTabBar({ base, myCount }: Props) {
     [location.pathname],
   );
 
-  const items = [
-    { to: `${base}/`, label: 'Главная', icon: House, end: true },
-    { to: `${base}/services`, label: 'Услуги', icon: ListBullets, end: false },
-    { to: `${base}/my`, label: myCount > 0 ? `Моя запись (${myCount})` : 'Моя запись', icon: CalendarCheck, end: false },
-  ];
-
   return (
-    <nav ref={ref} className="tabbar glass" aria-label="Основная навигация">
+    <nav ref={ref} className="tabbar glass" aria-label={label}>
       <GlassPane ref={pane} />
       <ul className="tabbar__list glass__label">
-        {items.map(({ to, label, icon: Icon, end }) => (
+        {items.map(({ to, label: text, icon: Icon, end, count }) => (
           <li key={to}>
             <NavLink to={to} end={end} className="tabbar__item">
               <Icon aria-hidden weight="bold" />
-              <span>{label.replace(/ \(\d+\)$/, '')}</span>
-              {myCount > 0 && label.startsWith('Моя') ? <span className="sr-only">: {myCount}</span> : null}
+              <span>{text}</span>
+              {count ? <span className="sr-only">: {count}</span> : null}
             </NavLink>
           </li>
         ))}
