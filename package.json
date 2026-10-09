@@ -28,7 +28,9 @@
     "check:no-business-strings": "tsx scripts/check-no-business-strings.ts",
     "deploy:vercel": "vercel deploy --prebuilt --prod",
     "deploy:cloudflare": "wrangler pages deploy dist --project-name ${CF_PAGES_PROJECT:-studio-booking}",
-    "astryx": "node node_modules/@astryxdesign/cli/clients/cli/bin/astryx.mjs"
+    "astryx": "node node_modules/@astryxdesign/cli/clients/cli/bin/astryx.mjs",
+    "dev:fake-llm": "node scripts/dev/fake-llm.mjs 54399",
+    "functions:serve": "node scripts/supabase-local.mjs functions serve"
   },
   "dependencies": {
     "@astryxdesign/core": "0.6.6",
@@ -63,7 +65,7 @@
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
     "jsdom": "^30.1.2",
-    "openai": "7.30.1",
+    "openai": "7.23.0",
     "oxlint": "^1.81.0",
     "pg": "^8.23.1",
     "sharp": "^0.35.5",
